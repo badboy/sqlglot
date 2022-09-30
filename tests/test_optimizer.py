@@ -6,7 +6,7 @@ from sqlglot.errors import OptimizeError
 from sqlglot.optimizer.annotate_types import annotate_types
 from sqlglot.optimizer.schema import MappingSchema, ensure_schema
 from sqlglot.optimizer.scope import build_scope, traverse_scope
-from tests.helpers import TPCH_SCHEMA, load_sql_fixture_pairs, load_sql_fixtures
+from tests.helpers import TPCH_SCHEMA, load_sql_fixture_pairs, load_sql_fixtures, str_to_bool
 
 
 class TestOptimizer(unittest.TestCase):
@@ -31,11 +31,14 @@ class TestOptimizer(unittest.TestCase):
     def check_file(self, file, func, pretty=False, **kwargs):
         for i, (meta, sql, expected) in enumerate(load_sql_fixture_pairs(f"optimizer/{file}.sql"), start=1):
             dialect = meta.get("dialect")
-            leave_tables_isolated = meta.get("leave_tables_isolated")
+            leave_tables_isolated = str_to_bool(meta.get("leave_tables_isolated"))
+            unquote_values_columns = str_to_bool(meta.get("unquote_values_columns"))
 
             func_kwargs = {**kwargs}
-            if leave_tables_isolated is not None:
-                func_kwargs["leave_tables_isolated"] = leave_tables_isolated.lower() in ("true", "1")
+            if leave_tables_isolated:
+                func_kwargs["leave_tables_isolated"] = leave_tables_isolated
+            if unquote_values_columns:
+                func_kwargs["unquote_values_columns"] = unquote_values_columns
 
             with self.subTest(f"{i}, {sql}"):
                 self.assertEqual(

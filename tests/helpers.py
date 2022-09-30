@@ -45,6 +45,10 @@ def load_sql_fixture_pairs(filename):
                 yield meta, sql, expected
 
 
+def str_to_bool(v):
+  return v is not None and isinstance(v, str) and v.lower() in ("yes", "true", "t", "1")
+
+
 TPCH_SCHEMA = {
     "lineitem": {
         "l_orderkey": "uint64",
