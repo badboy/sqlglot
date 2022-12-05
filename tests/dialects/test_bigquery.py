@@ -310,6 +310,20 @@ class TestBigQuery(Validator):
         self.validate_identity("COMMIT TRANSACTION")
         self.validate_identity("ROLLBACK TRANSACTION")
 
+        self.validate_all(
+            "CREATE TABLE table (x INT64) PARTITION BY y",
+            write={
+                "bigquery": "CREATE TABLE table (x INT64) PARTITIONED_BY=y",
+            },
+        )
+
+        self.validate_all(
+            "CREATE TABLE a (x INT64) CLUSTER BY x",
+            write={
+                "bigquery": "CREATE TABLE a (x INT64)  CLUSTER BY x",
+            },
+        )
+
     def test_user_defined_functions(self):
         self.validate_identity(
             "CREATE TEMPORARY FUNCTION a(x FLOAT64, y FLOAT64) RETURNS FLOAT64 NOT DETERMINISTIC LANGUAGE js AS 'return x*y;'"

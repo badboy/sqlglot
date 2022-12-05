@@ -83,6 +83,12 @@ def _create_sql(self, expression):
 
     return self.create_sql(expression)
 
+def _parse_cluster_by(self):
+    return self.expression(
+        exp.Cluster,
+        expressions=self._parse_csv(self._parse_ordered)
+    )
+
 
 class BigQuery(Dialect):
     unnest_column_only = True
@@ -160,6 +166,12 @@ class BigQuery(Dialect):
             TokenType.TABLE,
         }
 
+        PROPERTY_PARSERS = {
+            **parser.Parser.PROPERTY_PARSERS,
+            TokenType.PARTITION_BY: lambda self: self._parse_partitioned_by(),
+            TokenType.CLUSTER_BY: lambda self: _parse_cluster_by(self),
+        }
+
     class Generator(generator.Generator):
         TRANSFORMS = {
             **generator.Generator.TRANSFORMS,
@@ -206,6 +218,8 @@ class BigQuery(Dialect):
             exp.LanguageProperty,
             exp.ReturnsProperty,
             exp.VolatilityProperty,
+            exp.PartitionedByProperty,
+            exp.Cluster,
         }
 
         WITH_PROPERTIES = {exp.Property}
