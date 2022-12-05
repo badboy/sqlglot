@@ -89,6 +89,7 @@ class Parser(metaclass=_Parser):
     }
 
     TYPE_TOKENS = {
+        TokenType.ANY_TYPE,
         TokenType.BOOLEAN,
         TokenType.TINYINT,
         TokenType.SMALLINT,

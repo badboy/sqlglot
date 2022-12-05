@@ -2026,6 +2026,7 @@ class DataType(Expression):
     }
 
     class Type(AutoName):
+        ANY_TYPE = auto()
         CHAR = auto()
         NCHAR = auto()
         VARCHAR = auto()

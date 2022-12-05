@@ -65,6 +65,7 @@ class TokenType(AutoName):
     BYTE_STRING = auto()
 
     # types
+    ANY_TYPE = auto()
     BOOLEAN = auto()
     TINYINT = auto()
     SMALLINT = auto()

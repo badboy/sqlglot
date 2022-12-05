@@ -127,6 +127,7 @@ class BigQuery(Dialect):
             "QUALIFY": TokenType.QUALIFY,
             "UNKNOWN": TokenType.NULL,
             "WINDOW": TokenType.WINDOW,
+            "ANY TYPE": TokenType.ANY_TYPE,
         }
         KEYWORDS.pop("DIV")
 
