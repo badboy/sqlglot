@@ -255,6 +255,8 @@ class TokenType(AutoName):
     SCHEMA_COMMENT = auto()
     SEED = auto()
     SELECT = auto()
+    AS_STRUCT = auto()
+    AS_VALUE = auto()
     SEMI = auto()
     SEPARATOR = auto()
     SERDE_PROPERTIES = auto()
@@ -570,6 +572,8 @@ class Tokenizer(metaclass=_Tokenizer):
         "SCHEMA": TokenType.SCHEMA,
         "SEED": TokenType.SEED,
         "SELECT": TokenType.SELECT,
+        "AS STRUCT": TokenType.AS_STRUCT,
+        "AS VALUE": TokenType.AS_VALUE,
         "SEMI": TokenType.SEMI,
         "SET": TokenType.SET,
         "SHOW": TokenType.SHOW,

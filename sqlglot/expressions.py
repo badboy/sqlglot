@@ -1411,6 +1411,7 @@ class Select(Subqueryable):
         "distinct": False,
         "into": False,
         "from": False,
+        "as_other": False,
         **QUERY_MODIFIERS,
     }
 
@@ -2331,6 +2332,12 @@ class Bracket(Condition):
 
 
 class Distinct(Expression):
+    arg_types = {"expressions": False, "on": False}
+
+class AsStruct(Expression):
+    arg_types = {"expressions": False, "on": False}
+
+class AsValue(Expression):
     arg_types = {"expressions": False, "on": False}
 
 

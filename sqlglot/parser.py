@@ -1113,6 +1113,8 @@ class Parser(metaclass=_Parser):
             hint = self._parse_hint()
             all_ = self._match(TokenType.ALL)
             distinct = self._match(TokenType.DISTINCT)
+            as_struct = self._match(TokenType.AS_STRUCT)
+            as_value = self._match(TokenType.AS_VALUE)
 
             if distinct:
                 distinct = self.expression(
@@ -1123,6 +1125,15 @@ class Parser(metaclass=_Parser):
             if all_ and distinct:
                 self.raise_error("Cannot specify both ALL and DISTINCT after SELECT")
 
+            if as_struct and as_value:
+                self.raise_error("Cannot specify both AS STRUCT and AS VALUE after SELECT")
+
+            as_other = None
+            if as_struct:
+                as_other = self.expression(exp.AsStruct)
+            elif as_value:
+                as_other = self.expression(exp.AsValue)
+
             limit = self._parse_limit(top=True)
             expressions = self._parse_csv(self._parse_expression)
 
@@ -1132,6 +1143,7 @@ class Parser(metaclass=_Parser):
                 distinct=distinct,
                 expressions=expressions,
                 limit=limit,
+                as_other=as_other,
             )
             this.comments = comments
 
